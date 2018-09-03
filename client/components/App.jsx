@@ -1,4 +1,5 @@
 import React from 'react';
+import Search from './Search.jsx';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -11,7 +12,8 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>This is it</h1>
+        <h1>Javbrary</h1>
+        <Search />
       </div>
     )
   }
