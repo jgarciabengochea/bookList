@@ -1,0 +1,17 @@
+CREATE DATABASE myDB;
+
+USE myDB;
+
+CREATE TABLE authors (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(40),
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE books (
+  id INT NOT NULL AUTO_INCREMENT,
+  title VARCHAR(40),
+  author INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (author) REFERENCES authors(id)
+);
