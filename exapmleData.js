@@ -1,4 +1,4 @@
-module.exports.exampleBooks = [{
+const exampleBooks = [{
   "kind": "books#volume",
   "id": "sD5bvgAACAAJ",
   "etag": "G80SdGPeTws",
@@ -292,4 +292,15 @@ module.exports.exampleBooks = [{
   "searchInfo": {
    "textSnippet": "&quot;&#39;Welcome to the Knight Bus, emergency transport for the stranded witch or wizard."
   }
- }]
+ }];
+
+module.exports.exampleBooks = _.map(exampleBooks, (item) => {
+  let data = {
+    title: item.volumeInfo.title,
+    author: item.volumeInfo.authors[0],
+    description: item.volumeInfo.description,
+    image: item.volumeInfo.imageLinks.smallThumbnail,
+    saved: false
+  }
+  return data;
+});

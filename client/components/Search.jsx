@@ -18,7 +18,7 @@ export default class Search extends React.Component {
     return (
       <div className="search">
         <form >
-          <input type="text" onChange={(e) => {e.persist(); this.handleSearchQuery(e.target.value)}}/>
+          <input type="text" onChange={(e) => {e.persist(); e.preventDefault(); this.handleSearchQuery(e.target.value)}}/>
         </form>
         <button onClick={() => {this.props.handleSearch(this.state.query)}}>Search!</button>
       </div>

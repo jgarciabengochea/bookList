@@ -4,6 +4,8 @@ const BodyParser = require('body-parser');
 const request = require('request');
 const { API_KEY } = require('../config.js');
 const mysql = require('mysql2');
+const _ = require('lodash');
+const { utils } = require('../helpers/utils.js');
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -65,9 +67,26 @@ app.post('/books', (req, res) => {
   request(options, (err, response, body) => {
     if (err) {
       console.log(err);
+      res.status().send()
     } else {
-      body = JSON.parse(body);
-      res.status(201).send(body.items);
+      let sqlString = 'select title from books;';
+      connection.query(sqlString, (err, results, fields) => {
+        body = JSON.parse(body);
+        let formattedResults = utils.formatData(body.items);
+        if (results.length === 0) {
+          res.status(201).send(formattedResults);
+        } else {
+          let savedTitles = _.map(results, (result) => {
+            return result.title;
+          })
+          formattedResults.forEach((item) => {
+            if (savedTitles.indexOf(item.title) > 0) {
+              item.saved = true;
+            }
+          });
+          res.status(201).send(formattedResults);
+        }
+      });
     }
   })
 });

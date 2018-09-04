@@ -4,22 +4,34 @@ export default class BookListEntry extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      saved: false
+      title: this.props.book.title,
+      author: this.props.book.author,
+      description: this.props.book.description,
+      image: this.props.book.image,
+      saved: this.props.book.saved
     }
-    this.title = this.props.book.volumeInfo.title;
-    this.author = this.props.book.volumeInfo.authors[0];
-    this.description = this.props.book.volumeInfo.description;
-    this.thumbnail = this.props.book.volumeInfo.imageLinks.smallThumbnail;
   }
-  
+  // awww yiss we are in mutha fuckin business
+  componentWillReceiveProps(nextProps){
+    if(nextProps.book.title !== this.props.book.title){
+      this.setState({
+        title: nextProps.book.title,
+        author: nextProps.book.author,
+        description: nextProps.book.description,
+        image: nextProps.book.image,
+        saved: nextProps.book.saved
+      });
+    }
+  }
+
   handleClickSaveButton() {
     this.setState({
       saved: !this.state.saved
     }, () => {
       let bookData = {
-        title: this.title,
-        author: this.author,
-        image: this.thumbnail
+        title: this.state.title,
+        author: this.state.author,
+        image: this.state.image
       }
       if (this.state.saved) {
         this.props.handleSaveBookToLibrary(bookData);
@@ -36,11 +48,14 @@ export default class BookListEntry extends React.Component {
     let savedText = this.state.saved ? 'Saved!' : 'Save to Library';
     return (
       <div>
-        <h1>{this.title}</h1>
+        <br/>
+        <img src={this.state.image}/>
+        <h1>{this.state.title}</h1>
+        <h3>{this.state.author}</h3>
         <a href="#" style={savedStyle} onClick={() => this.handleClickSaveButton()}>{savedText}</a>
-        <h3>{this.author}</h3>
-        <div>Description: {this.description}</div>
-        <img src={this.thumbnail}/>
+        <br/>
+        <div>Description: {this.state.description}</div>
+        <br/>
       </div>
     );
   }
