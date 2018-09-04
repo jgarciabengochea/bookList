@@ -12,6 +12,7 @@ CREATE TABLE books (
   id INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(40),
   author INT NOT NULL,
+  image VARCHAR(140),
   PRIMARY KEY (id),
   FOREIGN KEY (author) REFERENCES authors(id)
 );

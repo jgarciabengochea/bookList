@@ -11,7 +11,6 @@ export default class Search extends React.Component {
   }
   
   handleSearchQuery(query) {
-    query = query.split(' ').join('+');
     this.setState({query});
   }
 
@@ -21,7 +20,7 @@ export default class Search extends React.Component {
         <form >
           <input type="text" onChange={(e) => {e.persist(); this.handleSearchQuery(e.target.value)}}/>
         </form>
-        <button>Search!</button>
+        <button onClick={() => {this.props.handleSearch(this.state.query)}}>Search!</button>
       </div>
     )
   }
