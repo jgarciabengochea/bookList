@@ -38,12 +38,24 @@ export default class App extends React.Component {
       .fail((err) => console.log(err));
   }
 
+  handleDeleteBookFromLibrary(bookData) {
+    $.ajax({
+      url: 'http://localhost:3000/library',
+      method: 'DELETE',
+      data: {data: bookData}
+    })
+      .done(() => {
+        alert('Deleted from your library');
+      })
+      .fail((err) => console.log(err));
+  }
+
   render() {
     return (
       <div>
         <h1>Javbrary</h1>
         <Search handleSearch={this.handleSearch.bind(this)}/>
-        <BookList books={this.state.books}/>
+        <BookList books={this.state.books} handleSaveBookToLibrary={this.handleSaveBookToLibrary} handleDeleteBookFromLibrary={this.handleDeleteBookFromLibrary}/>
       </div>
     )
   }

@@ -4,13 +4,13 @@ USE myDB;
 
 CREATE TABLE authors (
   id INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(40),
+  name VARCHAR(40) UNIQUE,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE books (
   id INT NOT NULL AUTO_INCREMENT,
-  title VARCHAR(40),
+  title VARCHAR(140) NOT NULL UNIQUE,
   author INT NOT NULL,
   image VARCHAR(140),
   PRIMARY KEY (id),

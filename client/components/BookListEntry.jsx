@@ -15,6 +15,17 @@ export default class BookListEntry extends React.Component {
   handleClickSaveButton() {
     this.setState({
       saved: !this.state.saved
+    }, () => {
+      let bookData = {
+        title: this.title,
+        author: this.author,
+        image: this.thumbnail
+      }
+      if (this.state.saved) {
+        this.props.handleSaveBookToLibrary(bookData);
+      } else {
+        this.props.handleDeleteBookFromLibrary(bookData);
+      }
     });
   }
 

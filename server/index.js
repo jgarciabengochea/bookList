@@ -4,10 +4,12 @@ const BodyParser = require('body-parser');
 const request = require('request');
 const { API_KEY } = require('../config.js');
 const mysql = require('mysql2');
+
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  database: 'myDB'
+  database: 'myDB',
+  multipleStatements: true
 });
 
 connection.connect((err) => {
@@ -21,13 +23,32 @@ connection.connect((err) => {
 app.use(BodyParser.urlencoded({extended: true}));
 app.use(BodyParser.json());
 
-app.get('/books', (req, res) => {
-  console.log('U GOT IT CAP\'N');
-  res.send();
-});
- 
 app.post('/library', (req, res) => {
+  let { title, author, image } = req.body.data;
+  let sqlString = `INSERT IGNORE INTO authors (name) VALUES ("${author}"); INSERT IGNORE INTO books (title, author, image) VALUES ("${title}", (select id from authors where name="${author}"), "${image}" )`;
+  connection.query(sqlString, (err, results, fields) => {
+    if (err) {
+      console.log(err);
+    }
+    res.status(201).send();
+  })
+});
 
+app.delete('/library', (req, res) => {
+  let { title, author } = req.body.data;
+  let params = [title, author];
+  let sqlString = 'delete from books, authors using books inner join authors on books.author=authors.id where books.title = ? and authors.name = ?;';
+  connection.query(sqlString, params, (err, results, fields) => {
+    if (err) {
+      console.log(err);
+    }
+    res.status(201).send();
+  })
+})
+
+app.get('/books', (req, res) => {
+console.log('U GOT IT CAP\'N');
+  res.send();
 });
 
 app.post('/books', (req, res) => {
